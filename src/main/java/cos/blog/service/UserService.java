@@ -13,14 +13,19 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public int memberRegister(User user){
+    public void memberRegister(User user){
         try{
             userRepository.save(user);
-            return 1;
+            return;
         } catch (Exception e){
             e.printStackTrace();
             System.out.println("UserService: 회원가입() : "+e.getMessage());
-            return -1;
+            return;
         }
+    }
+
+    @Transactional(readOnly = true) //select 할때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성)
+    public User Login(User user){
+        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
     }
 }

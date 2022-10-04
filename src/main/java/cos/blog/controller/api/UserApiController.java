@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 public class UserApiController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private HttpSession session;
 
     @PostMapping("/api/user")
     public ResponseDto<Integer> save(@RequestBody User user){ //username. password, email
@@ -24,5 +29,16 @@ public class UserApiController {
         userService.memberRegister(user);
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
+    }
+
+    @PostMapping("/api/user/login")
+    public ResponseDto<Integer> login(@RequestBody User user){
+        System.out.println("UserApiController 로그인");
+        User principal = userService.Login(user); //principal(접근 주체)
+
+        if (principal != null){
+            session.setAttribute("principal", principal);
+        }
+        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 }
