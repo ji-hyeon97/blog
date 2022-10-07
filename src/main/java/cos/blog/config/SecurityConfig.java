@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable() //csrf토큰 비활성
                 .authorizeRequests()
-                .antMatchers("/","/auth/**","/js/**","/css/**","/image/**")
+                .antMatchers("/","/auth/**","/js/**","/css/**","/image/**","/dummy/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -45,6 +45,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/auth/loginForm")
                 .loginProcessingUrl("/auth/loginProc")
                 .defaultSuccessUrl("/"); //스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로채서 대신 로그인 해 준다
-
     }
 }
