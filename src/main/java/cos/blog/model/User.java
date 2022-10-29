@@ -23,7 +23,7 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String username;
 
     @Column(nullable = false, length = 100)
@@ -35,6 +35,8 @@ public class User {
     //@ColumnDefault("user")
     @Enumerated(EnumType.STRING) //DB는 RoleType이 없다
     private RoleType role; //Enum 을 쓰는 것이 좋다. admin, user, manager -> 사실 도메인 설정이 필요
+
+    private String oauth;
 
     @CreationTimestamp //시간이 자동으로 입력
     private Timestamp createDate;
