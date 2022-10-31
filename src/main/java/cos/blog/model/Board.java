@@ -1,5 +1,6 @@
 package cos.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,12 +27,14 @@ public class Board {
 
     private int count; //조회수
 
-    @ManyToOne(fetch = FetchType.EAGER) //many(board) one(user)
+    @ManyToOne(fetch = FetchType.LAZY) //many(board) one(user)
     @JoinColumn(name = "userId")
     private User user; //DB는 오브젝트를 저장할 수 없다 -> 자바는 오브젝트를 저장할 수 있다
 
-    @OneToMany(mappedBy = "board") //mappedBy가 있으면 연관관계의 주인이 아니다 -> DBDp FK를 만들지 마시오
-    private List<Reply> reply;
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //mappedBy가 있으면 연관관계의 주인이 아니다 -> DBDp FK를 만들지 마시오
+    @JsonIgnoreProperties({"board"})
+    @OrderBy("id desc") // 내림차순
+    private List<Reply> replys;
 
     @CreationTimestamp
     private Timestamp createDate;
